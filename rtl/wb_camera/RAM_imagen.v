@@ -1,12 +1,12 @@
 
 module RAM_imagen(
 	input             clk_i, 
-	input             rst_i,
 	input             we_i,
+	input             re_i,
 	//
-	input      [23:0] adr_i,
-	output reg [7:0] dat_o,
-	input      [7:0] dat_i
+	input      [18:0] adr_i,
+	input      [7:0] dat_i,
+	output reg [7:0] dat_o
 
 );
 
@@ -21,4 +21,7 @@ begin
 		ram[ adr_i ] <= dat_i;
     
 end
+
+always @(posedge re_i)
+	dat_o <= ram[ adr_i ];
 endmodule

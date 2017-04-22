@@ -1,17 +1,28 @@
-module Camara(clk,rst,rw,Vsync,Href,Pclk,Xclk,Imagen);
+module Camara(clk,rst,we,re/*,addr*/,Vsync,Href,Pclk,Xclk,Imagen/*,ram_imagen*/);
 
 input clk;
 input rst;
-input rw;
+input we;
+input re;
+//input [18:0]addr;
 input Vsync;
 input Href;
 input Pclk;
 input [7:0]Imagen;
 
 output reg Xclk=0;
+//output wire [7:0]ram_imagen;
+
+reg [1:0] cont_clk=	0;
+reg [18:0]cont_ram=	0;
+reg [18:0]direccion=	0; 
+reg START=	0;
+
+reg [18:0]addr=0;    //Temporal
+wire [7:0]ram_imagen; //Temporal
 
 wire w_enable;
-assign w_enable = rw && Href;
+assign w_enable = we & Href;
 
 
 /*
@@ -25,11 +36,6 @@ RGB555		5-bit R, 5-bit G, 5-bit B 				1 0 1 1
 
 
 */
-
-
-reg [1:0] cont_clk=	0;
-reg [23:0]cont_ram=	0;
-reg START=	0;
 
 
 //--- f_Xclk= 25 Mhz -----------\\
@@ -65,16 +71,40 @@ always@(posedge Pclk)
 //-------------------------------\\
 
 
-always@(negedge Vsync)
+always@(Vsync)
 	begin
 	if(rst)
 		START=0;
-	else if(rw)
-		START=!START;	
+	else if(Vsync==0 && we==1)
+		START=1;
+	else if(Vsync==1 && !we==1)
+		START=0;	
+	end
+/*
+always@(posedge Vsync)
+	begin
+	if(rst)
+		START=0;
+	else if(!we)
+		START=0;	
+	end
+*/
+
+//-------------------------------\\
+
+always@(posedge clk)
+	begin
+	if(w_enable)
+		direccion =cont_ram;
+	else if(re)
+		direccion=addr;	
+		
 	end
 
 
-RAM_imagen ram(.clk_i(Pclk), .rst_i(rst), .we_i(w_enable), .adr_i(cont_ram), .dat_i(Imagen));
+
+
+RAM_imagen ram(.clk_i(Pclk), .we_i(w_enable), .re_i(re), .adr_i(direccion), .dat_i(Imagen), .dat_o(ram_imagen));
 
 endmodule
 

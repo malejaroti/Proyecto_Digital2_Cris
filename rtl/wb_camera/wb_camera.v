@@ -3,6 +3,11 @@
 //
 // Register Description:
 //
+//	0x00 Ok_Picture(Avail)
+//	0x04 Tomar_imagen
+//	0x08-0x4b08 Imagen
+//
+//		
 //---------------------------------------------------------------------------
 
 module wb_camera (
@@ -58,9 +63,9 @@ begin
 			ack <= 1;
 
 			case (wb_adr_i)
-			32'b01: begin
-				wb_dat_o[7:0] <= ok_foto;
-			end
+			32'b01: wb_dat_o[7:0] <= ok_foto;
+			32'b10:	
+			32'b11:
 			default: begin
 				wb_dat_o[7:0] <= ram[wb_adr_i-2];
 			end
