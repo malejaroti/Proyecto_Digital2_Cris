@@ -119,8 +119,9 @@ char spi_getchar();
  * Camera
  */
 typedef struct {
-   volatile uint8_t newfoto;
-   volatile uint8_t okfoto;
+   volatile uint8_t Tomar_imagen;	
+   volatile uint8_t Picture_Avail;
+   volatile uint8_t pIm; // escritura es address y lectura pos de address imagen
 } camera_t;
 
 void camera_takeP();

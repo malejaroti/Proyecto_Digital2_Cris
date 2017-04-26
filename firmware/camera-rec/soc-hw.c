@@ -152,8 +152,8 @@ void uart_putstr(char *str)
  */
 
 void camera_takeP(){
-	camera0->newfoto=1;
-	while(!(camera0->okfoto));
+	camera0->Tomar_imagen=1;
+	while(!(camera0->Picture_Avail));
 }
 
 void camera_sendP(){

@@ -3,9 +3,9 @@
 //
 // Register Description:
 //
-//	0x00 Ok_Picture(Avail)
-//	0x04 Tomar_imagen
-//	0x08-0x4b08 Imagen
+//	0x00000 Tomar_imagen
+//	0x00004 Picture_Avail
+//	0x00008-0x4B008 Imagen
 //
 //		
 //---------------------------------------------------------------------------
@@ -23,20 +23,31 @@ module wb_camera (
 	input       [31:0] wb_dat_i,
 	output reg  [31:0] wb_dat_o,
 	// camera
-	output		camera_Xclk,
-	input		camera_Pclk,
 	input		camera_Vsync,
 	input		camera_Href,
-	input	  [7:0]	Imagen
+	input		camera_Pclk,
+	input	  [7:0]	Imagen,
+
+	output wire	camera_Xclk
+
 );
 
 //---------------------------------------------------------------------------
 // Actual UART engine
 //---------------------------------------------------------------------------
-wire       ok_foto;
-reg        new_foto;
+wire       Picture_Avail;
+reg        Tomar_imagen;
 
-Camara C0(.clk(clk),.rst(reset),.Vsync(camera_Vsync),.Href(camera_Href),.Pclk(camera_Pclk),.Xclk(camera_Xclk),.Imagen(Imagen));
+wire we;
+reg re;
+reg [18:0] addr;
+wire [7:0] ram_imagen;
+wire fin;
+
+assign we = Tomar_Imagen;
+assign Picture_Avail=fin;
+
+Camara C0(.clk(clk),.rst(reset),.we(we),.re(re),.addr(addr),.Vsync(camera_Vsync),.Href(camera_Href),.Pclk(camera_Pclk),.Imagen(Imagen),.Xclk(camera_Xclk),.ram_imagen(ram_imagen),.fin(fin));
 
 
 //---------------------------------------------------------------------------
@@ -63,18 +74,18 @@ begin
 			ack <= 1;
 
 			case (wb_adr_i)
-			32'b01: wb_dat_o[7:0] <= ok_foto;
-			32'b10:	
-			32'b11:
-			default: begin
-				wb_dat_o[7:0] <= ram[wb_adr_i-2];
-			end
+                        32'h00: 
+			32'h01: wb_dat_o[7:0] <= Picture_Avail;
+			32'h02: begin
+				re=1;
+				wb_dat_o[7:0] <= ram_imagen;
+				end
 			endcase
 		end else if (wb_wr & ~ack ) begin
 			ack <= 1;
-			if ((wb_adr_i == 32'b00) & new_foto ==0) begin
-				new_foto <= 1;
-			end
+			case (wb_adr_i)
+                        32'h00: Tomar_Imagen <= 1;
+			32'h02: addr=wb_dat_i;
 		end
 	end
 end
