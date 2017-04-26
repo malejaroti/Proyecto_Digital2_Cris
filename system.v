@@ -171,7 +171,7 @@ conbus #(
 	.s1_addr(3'b010),	// uart0    0x20000000 
 	.s2_addr(3'b011),	// timer    0x30000000 
 	.s3_addr(3'b100),   // gpio     0x40000000 
-	.s4_addr(3'b101),	// spi      0x50000000 
+	.s4_addr(3'b101),	// camara      0x50000000 
 	.s5_addr(3'b110)	// i2c      0x60000000 
 ) conbus0(
 	.sys_clk( clk ),

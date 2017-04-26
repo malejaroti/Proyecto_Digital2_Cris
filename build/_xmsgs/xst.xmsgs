@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- IMPORTANT: This is an internal file that has been generated
+     by the Xilinx ISE software.  Any direct editing or
+     changes made to this file may result in unpredictable
+     behavior or data corruption.  It is strongly advised that
+     users do not edit the contents of this file. -->
+<messages>
+<msg type="warning" file="HDLCompiler" num="1016" delta="new" >"/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/system.v" Line 168: Port <arg fmt="%s" index="1">m0_cti_i</arg> is not connected to this instance
+</msg>
+
+<msg type="warning" file="HDLCompiler" num="1016" delta="new" >"/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/system.v" Line 349: Port <arg fmt="%s" index="1">spi_cs</arg> is not connected to this instance
+</msg>
+
+<msg type="warning" file="HDLCompiler" num="1016" delta="new" >"/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/system.v" Line 372: Port <arg fmt="%s" index="1">arst_i</arg> is not connected to this instance
+</msg>
+
+<msg type="warning" file="HDLCompiler" num="1127" delta="new" >"/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/system.v" Line 230: Assignment to <arg fmt="%s" index="1">gpio0_sel</arg> ignored, since the identifier is never used
+</msg>
+
+<msg type="warning" file="HDLCompiler" num="1127" delta="new" >"/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/system.v" Line 248: Assignment to <arg fmt="%s" index="1">i2c0_sel</arg> ignored, since the identifier is never used
+</msg>
+
+<msg type="warning" file="HDLCompiler" num="1127" delta="new" >"/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/rtl/lm32/lm32_cpu.v" Line 461: Assignment to <arg fmt="%s" index="1">pc_x</arg> ignored, since the identifier is never used
+</msg>
+
+<msg type="warning" file="HDLCompiler" num="1499" delta="new" >"/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/rtl/lm32/lm32_simtrace.v" Line 20: Empty module &lt;<arg fmt="%s" index="1">lm32_simtrace</arg>&gt; remains a black box.
+</msg>
+
+<msg type="warning" file="HDLCompiler" num="413" delta="new" >"/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/rtl/lm32/lm32_decoder.v" Line 559: Result of <arg fmt="%d" index="1">32</arg>-bit expression is truncated to fit in <arg fmt="%d" index="2">30</arg>-bit target.
+</msg>
+
+<msg type="warning" file="HDLCompiler" num="1127" delta="new" >"/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/rtl/lm32/lm32_cpu.v" Line 1138: Assignment to <arg fmt="%s" index="1">x_result_sel_logic_x</arg> ignored, since the identifier is never used
+</msg>
+
+<msg type="warning" file="HDLCompiler" num="1127" delta="new" >"/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/system.v" Line 273: Assignment to <arg fmt="%s" index="1">lm32i_cti</arg> ignored, since the identifier is never used
+</msg>
+
+<msg type="warning" file="HDLCompiler" num="1127" delta="new" >"/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/system.v" Line 274: Assignment to <arg fmt="%s" index="1">lm32i_lock</arg> ignored, since the identifier is never used
+</msg>
+
+<msg type="warning" file="HDLCompiler" num="1127" delta="new" >"/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/system.v" Line 275: Assignment to <arg fmt="%s" index="1">lm32i_bte</arg> ignored, since the identifier is never used
+</msg>
+
+<msg type="warning" file="HDLCompiler" num="1127" delta="new" >"/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/system.v" Line 287: Assignment to <arg fmt="%s" index="1">lm32d_cti</arg> ignored, since the identifier is never used
+</msg>
+
+<msg type="warning" file="HDLCompiler" num="1127" delta="new" >"/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/system.v" Line 288: Assignment to <arg fmt="%s" index="1">lm32d_lock</arg> ignored, since the identifier is never used
+</msg>
+
+<msg type="warning" file="HDLCompiler" num="1127" delta="new" >"/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/system.v" Line 289: Assignment to <arg fmt="%s" index="1">lm32d_bte</arg> ignored, since the identifier is never used
+</msg>
+
+<msg type="error" file="HDLCompiler" num="1654" delta="new" >"/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/system.v" Line 297: Instantiating &lt;<arg fmt="%s" index="1">bram0</arg>&gt; from unknown module &lt;<arg fmt="%s" index="2">wb_bram</arg>&gt;
+</msg>
+
+<msg type="warning" file="HDLCompiler" num="1499" delta="new" >"/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/system.v" Line 7: Empty module &lt;<arg fmt="%s" index="1">system</arg>&gt; remains a black box.
+</msg>
+
+</messages>
+

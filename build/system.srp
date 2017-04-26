@@ -1,0 +1,202 @@
+Release 14.7 - xst P.20131013 (lin64)
+Copyright (c) 1995-2013 Xilinx, Inc.  All rights reserved.
+--> 
+
+TABLE OF CONTENTS
+  1) Synthesis Options Summary
+  2) HDL Parsing
+  3) HDL Elaboration
+  4) HDL Synthesis
+       4.1) HDL Synthesis Report
+  5) Advanced HDL Synthesis
+       5.1) Advanced HDL Synthesis Report
+  6) Low Level Synthesis
+  7) Partition Report
+  8) Design Summary
+       8.1) Primitive and Black Box Usage
+       8.2) Device utilization summary
+       8.3) Partition Resource Summary
+       8.4) Timing Report
+            8.4.1) Clock Information
+            8.4.2) Asynchronous Control Signals Information
+            8.4.3) Timing Summary
+            8.4.4) Timing Details
+            8.4.5) Cross Clock Domains Report
+
+
+=========================================================================
+*                      Synthesis Options Summary                        *
+=========================================================================
+---- Source Parameters
+Input File Name                    : "system.prj"
+Input Format                       : MIXED
+
+---- Target Parameters
+Output File Name                   : "system.ngc"
+Target Device                      : xc7a100t-3csg324
+
+---- Source Options
+Top Module Name                    : system
+Automatic Register Balancing       : yes
+
+---- General Options
+Optimization Goal                  : AREA
+Optimization Effort                : 2
+RTL Output                         : yes
+
+=========================================================================
+
+
+=========================================================================
+*                          HDL Parsing                                  *
+=========================================================================
+Analyzing Verilog file "/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/system.v" into library work
+Parsing module <system>.
+Analyzing Verilog file "/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/rtl/lac/lac.v" into library work
+Parsing module <lac>.
+INFO:HDLCompiler:693 - "/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/rtl/lac/lac.v" Line 23. parameter declaration becomes local in lac with formal parameter declaration list
+INFO:HDLCompiler:693 - "/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/rtl/lac/lac.v" Line 24. parameter declaration becomes local in lac with formal parameter declaration list
+INFO:HDLCompiler:693 - "/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/rtl/lac/lac.v" Line 25. parameter declaration becomes local in lac with formal parameter declaration list
+INFO:HDLCompiler:693 - "/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/rtl/lac/lac.v" Line 86. parameter declaration becomes local in lac with formal parameter declaration list
+INFO:HDLCompiler:693 - "/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/rtl/lac/lac.v" Line 87. parameter declaration becomes local in lac with formal parameter declaration list
+INFO:HDLCompiler:693 - "/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/rtl/lac/lac.v" Line 88. parameter declaration becomes local in lac with formal parameter declaration list
+INFO:HDLCompiler:693 - "/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/rtl/lac/lac.v" Line 89. parameter declaration becomes local in lac with formal parameter declaration list
+INFO:HDLCompiler:693 - "/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/rtl/lac/lac.v" Line 90. parameter declaration becomes local in lac with formal parameter declaration list
+INFO:HDLCompiler:693 - "/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/rtl/lac/lac.v" Line 91. parameter declaration becomes local in lac with formal parameter declaration list
+INFO:HDLCompiler:693 - "/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/rtl/lac/lac.v" Line 92. parameter declaration becomes local in lac with formal parameter declaration list
+Analyzing Verilog file "/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/rtl/lac/uart.v" into library work
+Parsing module <uart>.
+INFO:HDLCompiler:693 - "/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/rtl/lac/uart.v" Line 24. parameter declaration becomes local in uart with formal parameter declaration list
+Analyzing Verilog file "/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/rtl/lac/dp_ram.v" into library work
+Parsing module <dp_ram>.
+INFO:HDLCompiler:693 - "/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/rtl/lac/dp_ram.v" Line 20. parameter declaration becomes local in dp_ram with formal parameter declaration list
+Analyzing Verilog file "/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/rtl/lm32/lm32_cpu.v" into library work
+Parsing verilog file "/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/rtl/lm32/lm32_include.v" included at line 24.
+Parsing verilog file "/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/system_conf.v" included at line 28.
+Parsing module <lm32_cpu>.
+Parsing verilog file "/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/rtl/lm32/lm32_functions.v" included at line 423.
+Analyzing Verilog file "/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/rtl/lm32/lm32_instruction_unit.v" into library work
+Parsing verilog file "/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/rtl/lm32/lm32_include.v" included at line 24.
+Parsing module <lm32_instruction_unit>.
+Parsing verilog file "/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/rtl/lm32/lm32_functions.v" included at line 291.
+Analyzing Verilog file "/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/rtl/lm32/lm32_decoder.v" into library work
+Parsing verilog file "/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/rtl/lm32/lm32_include.v" included at line 24.
+Parsing module <lm32_decoder>.
+Parsing verilog file "/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/rtl/lm32/lm32_functions.v" included at line 298.
+Analyzing Verilog file "/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/rtl/lm32/lm32_simtrace.v" into library work
+Parsing verilog file "/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/rtl/lm32/lm32_include.v" included at line 10.
+Parsing module <lm32_simtrace>.
+Parsing verilog file "/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/rtl/lm32/lm32_functions.v" included at line 63.
+Analyzing Verilog file "/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/rtl/lm32/lm32_load_store_unit.v" into library work
+Parsing verilog file "/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/rtl/lm32/lm32_include.v" included at line 24.
+Parsing module <lm32_load_store_unit>.
+Parsing verilog file "/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/rtl/lm32/lm32_functions.v" included at line 208.
+Analyzing Verilog file "/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/rtl/lm32/lm32_adder.v" into library work
+Parsing verilog file "/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/rtl/lm32/lm32_include.v" included at line 24.
+Parsing module <lm32_adder>.
+Analyzing Verilog file "/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/rtl/lm32/lm32_addsub.v" into library work
+Parsing verilog file "/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/rtl/lm32/lm32_include.v" included at line 23.
+Parsing module <lm32_addsub>.
+Analyzing Verilog file "/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/rtl/lm32/lm32_logic_op.v" into library work
+Parsing verilog file "/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/rtl/lm32/lm32_include.v" included at line 24.
+Parsing module <lm32_logic_op>.
+Analyzing Verilog file "/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/rtl/lm32/lm32_shifter.v" into library work
+Parsing verilog file "/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/rtl/lm32/lm32_include.v" included at line 24.
+Parsing module <lm32_shifter>.
+Analyzing Verilog file "/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/rtl/lm32/lm32_multiplier.v" into library work
+Parsing verilog file "/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/rtl/lm32/lm32_include.v" included at line 24.
+Parsing module <lm32_multiplier>.
+Analyzing Verilog file "/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/rtl/lm32/lm32_mc_arithmetic.v" into library work
+Parsing verilog file "/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/rtl/lm32/lm32_include.v" included at line 24.
+Parsing module <lm32_mc_arithmetic>.
+Analyzing Verilog file "/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/rtl/lm32/lm32_interrupt.v" into library work
+Parsing verilog file "/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/system_conf.v" included at line 24.
+Parsing verilog file "/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/rtl/lm32/lm32_include.v" included at line 25.
+Parsing module <lm32_interrupt>.
+Analyzing Verilog file "/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/rtl/lm32/lm32_ram.v" into library work
+Parsing verilog file "/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/rtl/lm32/lm32_include.v" included at line 23.
+Parsing module <lm32_ram>.
+Analyzing Verilog file "/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/rtl/wb_bram/wb_bram.v" into library work
+Analyzing Verilog file "/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/rtl/wb_uart/wb_uart.v" into library work
+Parsing module <wb_uart>.
+Analyzing Verilog file "/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/rtl/wb_timer/wb_timer.v" into library work
+Parsing module <wb_timer>.
+Analyzing Verilog file "/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/rtl/wb_gpio/wb_gpio.v" into library work
+Parsing module <wb_gpio>.
+Analyzing Verilog file "/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/rtl/wb_spi/wb_spi.v" into library work
+Parsing module <wb_spi>.
+Analyzing Verilog file "/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/rtl/wb_i2c/i2c_master_wb_top.v" into library work
+Parsing module <i2c_master_wb_top>.
+Analyzing Verilog file "/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/rtl/wb_i2c/i2c_master_registers.v" into library work
+Parsing verilog file "/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/rtl/wb_i2c/timescale.v" included at line 50.
+Parsing module <i2c_master_registers>.
+Analyzing Verilog file "/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/rtl/wb_i2c/i2c_master_byte_ctrl.v" into library work
+Parsing verilog file "/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/rtl/wb_i2c/i2c_master_defines.v" included at line 92.
+Parsing module <i2c_master_byte_ctrl>.
+Analyzing Verilog file "/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/rtl/wb_i2c/i2c_master_bit_ctrl.v" into library work
+Parsing verilog file "/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/rtl/wb_i2c/i2c_master_defines.v" included at line 147.
+Parsing module <i2c_master_bit_ctrl>.
+Analyzing Verilog file "/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/rtl/wb_conbus/conbus.v" into library work
+Parsing module <conbus>.
+Analyzing Verilog file "/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/rtl/wb_conbus/conbus_arb.v" into library work
+Parsing module <conbus_arb>.
+
+=========================================================================
+*                            HDL Elaboration                            *
+=========================================================================
+WARNING:HDLCompiler:1016 - "/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/system.v" Line 168: Port m0_cti_i is not connected to this instance
+WARNING:HDLCompiler:1016 - "/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/system.v" Line 349: Port spi_cs is not connected to this instance
+WARNING:HDLCompiler:1016 - "/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/system.v" Line 372: Port arst_i is not connected to this instance
+
+Elaborating module <system>.
+
+Elaborating module <conbus(s_addr_w=3,s0_addr=3'b0,s1_addr=3'b010,s2_addr=3'b011,s3_addr=3'b100,s4_addr=3'b101,s5_addr=3'b110)>.
+
+Elaborating module <conbus_arb>.
+WARNING:HDLCompiler:1127 - "/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/system.v" Line 230: Assignment to gpio0_sel ignored, since the identifier is never used
+WARNING:HDLCompiler:1127 - "/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/system.v" Line 248: Assignment to i2c0_sel ignored, since the identifier is never used
+
+Elaborating module <lm32_cpu>.
+
+Elaborating module <lm32_instruction_unit(associativity=1,sets=512,bytes_per_line=16,base_address=0,limit=0)>.
+"/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/rtl/lm32/lm32_instruction_unit.v" Line 699. $display Instruction bus error. Address: 0
+WARNING:HDLCompiler:1127 - "/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/rtl/lm32/lm32_cpu.v" Line 461: Assignment to pc_x ignored, since the identifier is never used
+
+Elaborating module <lm32_simtrace>.
+WARNING:HDLCompiler:1499 - "/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/rtl/lm32/lm32_simtrace.v" Line 20: Empty module <lm32_simtrace> remains a black box.
+
+Elaborating module <lm32_decoder>.
+WARNING:HDLCompiler:413 - "/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/rtl/lm32/lm32_decoder.v" Line 559: Result of 32-bit expression is truncated to fit in 30-bit target.
+
+Elaborating module <lm32_load_store_unit(associativity=1,sets=512,bytes_per_line=16,base_address=0,limit=0)>.
+
+Elaborating module <lm32_adder>.
+
+Elaborating module <lm32_addsub>.
+
+Elaborating module <lm32_logic_op>.
+
+Elaborating module <lm32_multiplier>.
+
+Elaborating module <lm32_mc_arithmetic>.
+
+Elaborating module <lm32_interrupt>.
+WARNING:HDLCompiler:1127 - "/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/rtl/lm32/lm32_cpu.v" Line 1138: Assignment to x_result_sel_logic_x ignored, since the identifier is never used
+WARNING:HDLCompiler:1127 - "/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/system.v" Line 273: Assignment to lm32i_cti ignored, since the identifier is never used
+WARNING:HDLCompiler:1127 - "/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/system.v" Line 274: Assignment to lm32i_lock ignored, since the identifier is never used
+WARNING:HDLCompiler:1127 - "/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/system.v" Line 275: Assignment to lm32i_bte ignored, since the identifier is never used
+WARNING:HDLCompiler:1127 - "/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/system.v" Line 287: Assignment to lm32d_cti ignored, since the identifier is never used
+WARNING:HDLCompiler:1127 - "/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/system.v" Line 288: Assignment to lm32d_lock ignored, since the identifier is never used
+WARNING:HDLCompiler:1127 - "/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/system.v" Line 289: Assignment to lm32d_bte ignored, since the identifier is never used
+ERROR:HDLCompiler:1654 - "/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/system.v" Line 297: Instantiating <bram0> from unknown module <wb_bram>
+Module system remains a blackbox, due to errors in its contents
+WARNING:HDLCompiler:1499 - "/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/system.v" Line 7: Empty module <system> remains a black box.
+--> 
+
+
+Total memory usage is 358556 kilobytes
+
+Number of errors   :    1 (   0 filtered)
+Number of warnings :   16 (   0 filtered)
+Number of infos    :    0 (   0 filtered)
+

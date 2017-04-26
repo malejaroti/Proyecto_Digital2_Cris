@@ -14,11 +14,6 @@ void prueba()
 	   uart0->rxtx=30;
 	   timer0->tcr0 = 0xAA;
 	   gpio0->ctrl=0x55;
-	   spi0->rxtx=1;
-	   spi0->nop1=2;
-	   spi0->cs=3;
-	   spi0->nop2=5;
-	   spi0->divisor=4;
 	   i2c0->rxtx=5;
 	   i2c0->divisor=5;
 
@@ -157,13 +152,13 @@ void camera_takeP(){
 }
 
 void camera_sendP(){
-	for(int i=0; i<(640*480);i++){
-		uart_putchar(camera0+i+2)
+	char pixel;
+	int i=0;
+	while(i<307200) /*for(i=0;i<307200;i++)*/{
+		camera0->pIm=i;
+		pixel=camera0->pIm;
+		uart_putchar(pixel);
+		i++;
 	}
 }
 
-void camera_restart(){
-	for(int i=0; i<(640*480);i++){
-		*(camera0+i+2)=85;
-	}
-}

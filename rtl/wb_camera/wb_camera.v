@@ -75,8 +75,8 @@ begin
 
 			case (wb_adr_i)
                         32'h00: 
-			32'h01: wb_dat_o[7:0] <= Picture_Avail;
-			32'h02: begin
+			32'h04: wb_dat_o[7:0] <= Picture_Avail;
+			32'h08: begin
 				re=1;
 				wb_dat_o[7:0] <= ram_imagen;
 				end
@@ -84,8 +84,8 @@ begin
 		end else if (wb_wr & ~ack ) begin
 			ack <= 1;
 			case (wb_adr_i)
-                        32'h00: Tomar_Imagen <= 1;
-			32'h02: addr=wb_dat_i;
+                        32'h00: Tomar_Imagen <= wb_dat_i;
+			32'h08: addr=wb_dat_i;
 		end
 	end
 end

@@ -119,14 +119,13 @@ char spi_getchar();
  * Camera
  */
 typedef struct {
-   volatile uint8_t Tomar_imagen;	
-   volatile uint8_t Picture_Avail;
+   volatile uint32_t Tomar_imagen;	
+   volatile uint32_t Picture_Avail;
    volatile uint8_t pIm; // escritura es address y lectura pos de address imagen
 } camera_t;
 
 void camera_takeP();
 void camera_sendP();
-void camera_reset();
 
 /***************************************************************************
  * I2C0
