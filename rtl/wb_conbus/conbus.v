@@ -128,9 +128,9 @@ module conbus #(
 	input		s5_ack_i
 );
 
-// address + CTI + data + byte select
+// address + CTI + byte select + data 
 // + cyc + we + stb
-`define mbusw_ls  32 + 3 + 32 + 4 + 3
+`define mbusw_ls  32 + 3 + 4 + 32 + 3
 
 wire [5:0] slave_sel;
 wire [6:0] gnt;

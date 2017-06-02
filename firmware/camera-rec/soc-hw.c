@@ -2,7 +2,7 @@
 
 uart_t  *uart0  = (uart_t *)   0x20000000;
 timer_t *timer0 = (timer_t *)  0x30000000;
-gpio_t  *gpio0  = (gpio_t *)   0x40000000;
+pantalla_t  *pantalla0  = (pantalla_t *)   0x40000000;
 //uart_t  *uart1  = (uart_t *)   0x20000000;
 camera_t   *camera0   = (camera_t *)    0x50000000;
 i2c_t   *i2c0   = (i2c_t *)    0x60000000;
@@ -13,9 +13,9 @@ void prueba()
 {
 	   uart0->rxtx=30;
 	   timer0->tcr0 = 0xAA;
-	   gpio0->ctrl=0x55;
-	   i2c0->rxtx=5;
-	   i2c0->divisor=5;
+	   //gpio0->ctrl=0x55;
+	   //i2c0->rxtx=5;
+	   //i2c0->divisor=5;
 
 }
 void tic_isr();
@@ -148,17 +148,90 @@ void uart_putstr(char *str)
 
 void camera_takeP(){
 	camera0->Tomar_imagen=1;
-	while(!(camera0->Picture_Avail));
+	while(!(camera0->Picture_Avail))
+		uart_putchar(camera0->Tomar_imagen1);
 }
 
 void camera_sendP(){
 	char pixel;
 	int i=0;
 	while(i<307200) /*for(i=0;i<307200;i++)*/{
-		camera0->pIm=i;
-		pixel=camera0->pIm;
+		camera0->pIm=i;		//wb_address=camera0->pIm	// wb_dat_i=i 
+		pixel=camera0->pIm;	//wb_address=camera0->pIm(i)	// pixel=wb_dat_o
 		uart_putchar(pixel);
+		
 		i++;
 	}
 }
+
+char camera_pixel(int address){
+	char pixel;
+	camera0->pIm=address;
+	pixel=camera0->pIm;
+	return pixel;
+
+}
+
+/***************************************************************************
+ * Pantalla Functions
+ */
+
+void pantalla_receiveRed(char pixel){
+	pantalla0->red=pixel;
+}
+
+void pantalla_receiveGreen(char pixel){
+	pantalla0->green=pixel;
+}
+
+void pantalla_receiveBlue(char pixel){
+	pantalla0->blue=pixel;
+}
+
+void pantalla_wEnable(int estado){
+	pantalla0->w_enable=estado;
+}
+
+
+/***************************************************************************
+ * I2C Functions
+ */
+
+
+void i2c_init(uint8_t PRERlo,uint8_t PRERhi){
+	i2c0->prerL = PRERlo;
+	i2c0->prerH = PRERhi;
+	i2c0->ctr   = 0x80;    //Enable core	
+
+}
+
+//The device slave addresses are 42 for write and 43 for read.
+
+void i2c_write(uint8_t addr,uint8_t slvAddr,uint8_t data){ 
+	i2c0->txr = addr<<1;
+	i2c0->cr   = 0x90;		//Start and write
+	/*while(!(i2c0->sr & tip)); //falta definir tip
+	i2c0->txr = slvAddr;		
+	i2c0->cr   = 0x10;		//Write
+	while(!(i2c0->sr & tip)); 
+	i2c0->txr = data;
+	i2c0->cr   = 0x50;		//Write and stop
+	while(!(i2c0->sr & tip));*/
+}
+
+void i2c_read(uint8_t addr,uint8_t slvAddr){
+	uint8_t data;
+	i2c0->txr = (addr<<1)|1;
+	i2c0->cr   = 0x90;		//Start and write
+	/*while(!(i2c0->sr & tip)); //falta definir tip
+	i2c0->txr = slvAddr;		
+	i2c0->cr   = 0x10;		//Write
+	while(!(i2c0->sr & tip)); 
+	data = i2c0->rxr;
+	i2c0->cr   = 0x28;		//Read and stop
+	while(!(i2c0->sr & tip));
+	uart_putchar(data);*/
+
+}
+
 

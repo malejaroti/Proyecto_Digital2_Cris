@@ -71,6 +71,7 @@ void tic_init();
 /***************************************************************************
  * GPIO0
  */
+/*
 typedef struct {
 	volatile uint32_t ctrl;
 	volatile uint32_t dummy1;
@@ -80,6 +81,7 @@ typedef struct {
 	volatile uint32_t out;
 	volatile uint32_t oe;
 } gpio_t;
+*/
 
 /***************************************************************************
  * UART0
@@ -118,32 +120,70 @@ char spi_getchar();
 /***************************************************************************
  * Camera
  */
+
 typedef struct {
-   volatile uint32_t Tomar_imagen;	
+   volatile uint8_t Tomar_imagen;
+   volatile uint8_t Tomar_imagen1;
+   volatile uint8_t Tomar_imagen2;
+   volatile uint8_t Tomar_imagen3;	
    volatile uint32_t Picture_Avail;
-   volatile uint8_t pIm; // escritura es address y lectura pos de address imagen
+   volatile uint32_t pIm	; // escritura es address y lectura pos de address imagen
 } camera_t;
 
 void camera_takeP();
 void camera_sendP();
+char camera_pixel(int address);
+
+/***************************************************************************
+ * Pantalla
+ */
+
+typedef struct {
+   volatile uint32_t red;
+   volatile uint32_t green;
+   volatile uint32_t blue;
+   volatile uint32_t w_enable;	
+} pantalla_t;
+
+void pantalla_receiveRed(char pixel);
+void pantalla_receiveGreen(char pixel);
+void pantalla_receiveBlue(char pixel);
+void pantalla_wEnable(int estado);
+
 
 /***************************************************************************
  * I2C0
  */
 
 typedef struct {
+   volatile uint8_t prerL;  	//prescale register Low [7:0]
+   volatile uint8_t prerH;  	//prescale register High [15:8]
+   volatile uint8_t ctr;	//control register 
+   volatile uint8_t rxr;	//receive register 
+   volatile uint8_t sr;		//status register
+   volatile uint8_t txr;	//transmit register
+   volatile uint8_t cr;		//command register
+
+} i2c_t;
+
+void i2c_init(uint8_t PRERlo,uint8_t PRERhi);
+void i2c_write(uint8_t addr,uint8_t slvAddr,uint8_t data);
+
+
+
+/*
+typedef struct {
    volatile uint32_t rxtx;
    volatile uint32_t divisor;
 } i2c_t;
-
-
+*/
 
 /***************************************************************************
  * Pointer to actual components
  */
 extern timer_t  *timer0;
 extern uart_t   *uart0; 
-extern gpio_t   *gpio0; 
+//extern gpio_t   *gpio0; 
 extern uint32_t *sram0; 
 
 #endif // SPIKEHW_H

@@ -26,14 +26,16 @@ module Camara (
 		//Salisa Hardware
 		output reg	Xclk,
 		//Salida Software
-		output wire [7:0] ram_imagen,
-		output wire	fin
-		);
+		output  [7:0] ram_imagen,
+		output  reg [18:0] cont_ram,
+		output 	fin	
+
+	);
 
 
 
 reg [1:0] cont_clk=	0;
-reg [18:0]cont_ram=	0;
+//reg [18:0]cont_ram=	0;
 reg [18:0]direccion=	0; 
 reg START=	0;
 
@@ -44,10 +46,10 @@ assign w_enable = we & Href;
 
 always@(posedge clk)
 	begin
-	if(rst==1)
+	if(rst)begin
 	cont_clk=0;
-	else
-		if(cont_clk==2'b11) //25Mhz
+	end else
+		if(cont_clk==2'b01) //25Mhz
 		begin
 		Xclk=!Xclk;
 		cont_clk=0;
@@ -72,12 +74,12 @@ always@(Vsync)
 
 always@(posedge Pclk)
 	begin
-	if(rst==1)
-	cont_ram=0;
-	else
+	if(rst)
+	cont_ram=10;
+	else 
+	cont_ram=20;
 		if(START==1 && Href==1)
 		cont_ram=cont_ram+1'b1;	
-
 	end
 
 //-------------------------------\\

@@ -44,7 +44,13 @@ SRC=                                      \
 	../rtl/wb_i2c/i2c_master_byte_ctrl.v  \
 	../rtl/wb_i2c/i2c_master_bit_ctrl.v  \
 	../rtl/wb_conbus/conbus.v          \
-	../rtl/wb_conbus/conbus_arb.v      
+	../rtl/wb_conbus/conbus_arb.v      \
+	../rtl/wb_camera/wb_camera.v	   \
+	../rtl/wb_camera/Camara.v	   \
+	../rtl/wb_camera/RAM_imagen.v      \
+	../rtl/wb_pantalla/wb_pantalla.v   \
+	../rtl/wb_pantalla/pantalla.v	   \
+	../rtl/wb_pantalla/RAM_pantalla.v
 
 #############################################################################
 # Synthesis constants
@@ -136,8 +142,10 @@ usage: system-routed.xdl
 	xdlanalyze.pl system-routed.xdl $(USAGE_DEPTH)
 
 
-upload: system.bit
-	sudo fpgaprog -v -f system.bit 
+upload: 
+	sudo djtgcfg init -d Nexys4
+	sudo djtgcfg prog -d Nexys4 -i 0 -f system.bit
+	
 
 
 ####################################################################

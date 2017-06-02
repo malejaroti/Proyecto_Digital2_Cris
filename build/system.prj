@@ -26,3 +26,9 @@ verilog work ../rtl/wb_i2c/i2c_master_byte_ctrl.v
 verilog work ../rtl/wb_i2c/i2c_master_bit_ctrl.v
 verilog work ../rtl/wb_conbus/conbus.v
 verilog work ../rtl/wb_conbus/conbus_arb.v
+verilog work ../rtl/wb_camera/wb_camera.v
+verilog work ../rtl/wb_camera/Camara.v
+verilog work ../rtl/wb_camera/RAM_imagen.v
+verilog work ../rtl/wb_pantalla/wb_pantalla.v
+verilog work ../rtl/wb_pantalla/pantalla.v
+verilog work ../rtl/wb_pantalla/RAM_pantalla.v

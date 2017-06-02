@@ -1,16 +1,13 @@
 //---------------------------------------------------------------------------
-// Wishbone camera
+// Wishbone pantalla
 //
 // Register Description:
 //
-//	0x00000 Tomar_imagen
-//	0x00004 Picture_Avail
-//	0x00008-0x4B008 Imagen
 //
 //		
 //---------------------------------------------------------------------------
 
-module wb_camera (
+module wb_pantalla (
 	input              clk,
 	input              reset,
 	// Wishbone interface
@@ -23,37 +20,21 @@ module wb_camera (
 	input       [31:0] wb_dat_i,
 	output reg  [31:0] wb_dat_o,
 	// camera
-	input		camera_Vsync,
-	input		camera_Href,
-	input		camera_Pclk,
-	input	  [7:0]	Imagen,
+	output		P_Vsync,
+	output		P_Hsync,
+	output 	[3:0]   P_red,
+	output 	[3:0]	P_green,
+	output 	[3:0]	P_blue);
 
-	output wire	camera_Xclk
+reg [3:0] red_i;
+reg [3:0] green_i;
+reg [3:0] blue_i;
+reg w_enable;
 
-);
 
-//---------------------------------------------------------------------------
-// Actual UART engine
-//---------------------------------------------------------------------------
-wire       Picture_Avail;
-reg        Tomar_imagen;
+VGA vga0(.clk(clk),.rst(reset),.red_i(red_i),.green_i(green_i),.blue_i(green_i),.w_enable(w_enable),.Hsync(P_Hsync),.Vsync(P_Vsync),.vgaRed(P_red),.vgaGreen(P_green),.vgaBlue(P_blue));
 
-wire [18:0]cont_ram;
-
-wire we;
-reg re;
-reg [18:0] addr;
-wire [7:0] ram_imagen;
-wire fin;
-
-assign we = Tomar_imagen;
-assign Picture_Avail=fin;
-
-Camara C0(.clk(clk),.rst(reset),.we(we),.re(re),.addr(addr),.Vsync(camera_Vsync),.Href(camera_Href),.Pclk(camera_Pclk),.Imagen(Imagen),.Xclk(camera_Xclk),.ram_imagen(ram_imagen),.fin(fin),.cont_ram(cont_ram));
-
-wire pIm;
-assign pIm=ram_imagen;
-//---------------------------------------------------------------------------
+//-----------------------------------------------------
 // 
 //---------------------------------------------------------------------------
 
@@ -77,18 +58,16 @@ begin
 			ack <= 1;
 
 			case (wb_adr_i[3:0])
-                        4'h00: wb_dat_o[18:0]<=cont_ram[18:0]; 
-			4'h04: wb_dat_o[7:0] <= Picture_Avail;
-			4'h08: begin
-				re=1;
-				wb_dat_o[3:0] <= pIm;  //Enviar dato
-				end
+			default:;
 			endcase
 		end else if (wb_wr & ~ack ) begin	//Lectura
 			ack <= 1;
 			case (wb_adr_i[3:0])
-                        4'h00: Tomar_imagen <= wb_dat_i;
-			4'h08: addr=wb_dat_i;
+                        4'h00:	red_i[3:0] <= wb_dat_i[3:0];
+			4'h04:	green_i[3:0] <= wb_dat_i[3:0];
+			4'h08:	blue_i[3:0] <= wb_dat_i[3:0];
+			4'h0C:  w_enable <= wb_dat_i[0];
+			default:;
 			endcase
 		end
 	end

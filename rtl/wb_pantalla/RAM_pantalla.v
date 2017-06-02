@@ -1,4 +1,4 @@
-module RAM_imagen (
+module RAM_pantalla (
 	input		clk_i, 
 	input		we_i,
 	input		re_i,
