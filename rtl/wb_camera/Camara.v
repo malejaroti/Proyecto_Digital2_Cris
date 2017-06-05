@@ -17,69 +17,137 @@ module Camara (
 		//Entradas Software
 		input		we,
 		input		re,
-		input [18:0]	addr,
+		input [18:0]	addr_ram_i,
+
 		//Entradas Hardware
 		input		Vsync,
 		input		Href,
 		input		Pclk,
-		input [7:0]	Imagen,
-		//Salisa Hardware
+		input [7:0]	ram_imagen_i,
+
+		//Salida Hardware
 		output reg	Xclk,
+
 		//Salida Software
-		output  [7:0] ram_imagen,
-		output  reg [18:0] cont_ram,
-		output 	fin	
+		output  [7:0] ram_imagen_o,
+		output 	fin,
+
+		//output led1,
+		//output [7:0] pixel,
+		//output [10:0] address,
+		//output VS,
+		//output href,
+		//output pclk,
+		//output xclk
+		output [18:0] contador
 
 	);
 
 
 
-reg [1:0] cont_clk=	0;
-//reg [18:0]cont_ram=	0;
-reg [18:0]direccion=	0; 
-reg START=	0;
+//-------------------------------------------------------
+
+//Salidas software
+//wire [7:0]ram_imagen_o;
+//wire fin;
+
+//Entradas Software
+//reg we=1;
+//reg re=0;
+//reg [18:0] addr_ram_i=0;
+
+//-----------------------------------------------------------
+
+reg [1:0] cont_clk = 0;
+reg 	  cont_aux = 0;
+reg [18:0]cont_ram = 0;
+reg [18:0]direccion= 0; 
+reg 	  START = 0;
 
 wire w_enable;
-assign w_enable = we & Href;
+assign w_enable = we & Href & START & !fin; //Comenzo un nuevo ciclo y Href activo y no a terminado
+
+//-----------------------------------------------------------
+//assign pixel=ram_imagen_i;
+initial
+begin
+Xclk<=0;
+end
+reg var=0;
+
+//assign address=cont_ram[18:8];
+//assign VS=Vsync;
+//assign xclk=Xclk;
+//assign pclk=Pclk;
+//assign href=Href;
+//assign pixel=ram_imagen_i;
+//assign led1=START;
+assign contador=cont_ram;
+
+//-----------------------------------------------------------
 
 //--- f_Xclk= 25 Mhz -----------\\
 
 always@(posedge clk)
 	begin
-	if(rst)begin
-	cont_clk=0;
-	end else
+	if(rst)
+	begin
+	cont_clk<=0;
+	Xclk<=0;
+	end
+	else
 		if(cont_clk==2'b01) //25Mhz
 		begin
-		Xclk=!Xclk;
-		cont_clk=0;
+		Xclk<=!Xclk;
+		cont_clk<=0;
 		end
 		else
-		cont_clk= cont_clk+2'b01;
+		cont_clk<= cont_clk+2'b01;
 	end
 
 //-------------------------------\\
 
-always@(Vsync)
+always@(negedge Vsync)
 	begin
 	if(rst)
-		START=0;
-	else if(Vsync==0 && we==1)
-		START=1;
-	else if(Vsync==1)
-		START=0;	
+		begin
+		START<=0;
+		end
+	else if(we && var)
+		begin
+		START<=1;
+		end
 	end
+
+always@(posedge Vsync)
+	begin
+	if(rst)
+		begin
+		var<=0;
+		end
+	else
+		begin
+		var<=1;
+		end
+	end
+
 
 //-------------------------------\\
 
-always@(posedge Pclk)
+always@(posedge Pclk)			//tp=2 x Pclk
 	begin
 	if(rst)
-	cont_ram=10;
-	else 
-	cont_ram=20;
-		if(START==1 && Href==1)
-		cont_ram=cont_ram+1'b1;	
+		cont_ram<=0;
+	else if(w_enable)
+		begin
+		if(cont_aux==1)
+			begin
+			cont_ram<=cont_ram+1'b1;	
+			cont_aux<=0;
+			end
+		else
+			cont_aux<=cont_aux+1;
+		end
 	end
 
 //-------------------------------\\
@@ -87,16 +155,15 @@ always@(posedge Pclk)
 always@(posedge clk)
 	begin
 	if(w_enable)
-		direccion =cont_ram;
+		direccion <= cont_ram;
 	else if(re)
-		direccion=addr; 
+		direccion<=addr_ram_i; 
 		
 	end
 
 
 
-
-RAM_imagen ram(.clk_i(Pclk), .we_i(w_enable), .adr_i(direccion), .dat_i(Imagen), .dat_o(ram_imagen), .fin(fin));
+RAM_imagen ram(.clk_i(Pclk),.rst(rst), .we_i(w_enable),.re_i(re), .adr_i(direccion), .dat_i(ram_imagen_i), .dat_o(ram_imagen_o), .fin(fin));
 
 endmodule
 

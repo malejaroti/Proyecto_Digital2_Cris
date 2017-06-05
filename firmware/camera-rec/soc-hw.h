@@ -122,10 +122,7 @@ char spi_getchar();
  */
 
 typedef struct {
-   volatile uint8_t Tomar_imagen;
-   volatile uint8_t Tomar_imagen1;
-   volatile uint8_t Tomar_imagen2;
-   volatile uint8_t Tomar_imagen3;	
+   volatile uint32_t Tomar_imagen;	
    volatile uint32_t Picture_Avail;
    volatile uint32_t pIm	; // escritura es address y lectura pos de address imagen
 } camera_t;
@@ -143,12 +140,16 @@ typedef struct {
    volatile uint32_t green;
    volatile uint32_t blue;
    volatile uint32_t w_enable;	
+   volatile uint32_t r_enable;
+   volatile uint32_t reset;
 } pantalla_t;
 
 void pantalla_receiveRed(char pixel);
 void pantalla_receiveGreen(char pixel);
 void pantalla_receiveBlue(char pixel);
-void pantalla_wEnable(int estado);
+void pantalla_wEnable();
+void pantalla_reset();
+void pantalla_rEnable();
 
 
 /***************************************************************************

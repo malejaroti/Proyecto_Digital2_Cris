@@ -1,7 +1,7 @@
 #include "soc-hw.h"
 
-uart_t  *uart0  = (uart_t *)   0x20000000;
-timer_t *timer0 = (timer_t *)  0x30000000;
+uart_t  *uart0  = (uart_t *)   0x30000000;
+timer_t *timer0 = (timer_t *)  0x20000000;
 pantalla_t  *pantalla0  = (pantalla_t *)   0x40000000;
 //uart_t  *uart1  = (uart_t *)   0x20000000;
 camera_t   *camera0   = (camera_t *)    0x50000000;
@@ -148,13 +148,16 @@ void uart_putstr(char *str)
 
 void camera_takeP(){
 	camera0->Tomar_imagen=1;
-	while(!(camera0->Picture_Avail))
-		uart_putchar(camera0->Tomar_imagen1);
+	//uint32_t contador=0;
+	//while((camera0->Picture_Avail)!=1)
+		//contador=camera0->Tomar_imagen;
+	//	uart_putchar(0x3);
 }
 
 void camera_sendP(){
 	char pixel;
 	int i=0;
+	
 	while(i<307200) /*for(i=0;i<307200;i++)*/{
 		camera0->pIm=i;		//wb_address=camera0->pIm	// wb_dat_i=i 
 		pixel=camera0->pIm;	//wb_address=camera0->pIm(i)	// pixel=wb_dat_o
@@ -162,6 +165,7 @@ void camera_sendP(){
 		
 		i++;
 	}
+	
 }
 
 char camera_pixel(int address){
@@ -182,14 +186,24 @@ void pantalla_receiveRed(char pixel){
 
 void pantalla_receiveGreen(char pixel){
 	pantalla0->green=pixel;
+
 }
 
 void pantalla_receiveBlue(char pixel){
 	pantalla0->blue=pixel;
 }
 
-void pantalla_wEnable(int estado){
-	pantalla0->w_enable=estado;
+void pantalla_wEnable(){
+	pantalla0->w_enable=1;
+}
+
+void pantalla_rEnable(){
+	pantalla0->r_enable=1;
+}
+
+void pantalla_reset(){
+	pantalla0->reset=1;
+	pantalla0->reset=0;
 }
 
 

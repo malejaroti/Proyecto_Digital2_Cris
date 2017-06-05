@@ -4,7 +4,8 @@ module VGA(
 	input	[3:0]	red_i,
 	input	[3:0]	green_i,
 	input	[3:0]	blue_i,
-	input		w_enable,
+	input		w_enable,	//selecciona velocidad i/o clk_RAM
+	input		r_enable,
 	output		Hsync,		//horizontal sync out
 	output		Vsync,		//vertical sync out
 	output reg [3:0] vgaRed,	//red vga output
@@ -25,13 +26,13 @@ parameter vbp = 	33;
 parameter vfp = 	10; 	
 
 // registers for storing the horizontal & vertical counters
-reg [9:0] hc;
-reg [9:0] vc;
+reg [9:0] hc=0;
+reg [9:0] vc=0;
 
-reg [2:0]cont_clk=0;
+reg [2:0] cont_clk;
 reg Xclk=0;
 
-reg direccion;
+reg direccion=0;
 
 wire active;
 
@@ -44,6 +45,14 @@ assign active= (hc<width && vc<height) ? 1:0;
 assign clk_RAM= (w_enable) ? clk: Xclk;
 
 assign Imagen= red_i||green_i||blue_i;
+
+initial
+begin
+vgaRed<=0;
+vgaGreen<=0;
+vgaBlue<=0;
+cont_clk<=0;
+end
 
 
 always @(posedge Xclk or posedge rst)
@@ -78,30 +87,36 @@ assign Vsync = (vc >= vfp+height-1 && vc < hfp+height+hpulse-1) ? 1:0;
 
 always @(posedge Xclk)
 begin
+	if(rst)
+		begin
+		vgaRed<=0;
+		vgaGreen<=0;
+		vgaBlue<=0;
+		end
 	// Check if we're within vertical active video range
-	if (vc > height)
+	else if (vc > height)
 	begin
 
 		if (hc <width)
 		begin
-			vgaRed = red_dly;
-			vgaGreen = green_dly;
-			vgaBlue = blue_dly;
+			vgaRed <= red_dly;
+			vgaGreen <= green_dly;
+			vgaBlue <= blue_dly;
 		end
 	// we're outside active horizontal range so display black
 		else
 		begin
-			vgaRed = 0;
-			vgaGreen = 0;
-			vgaBlue = 0;
+			vgaRed <= 0;
+			vgaGreen <= 0;
+			vgaBlue <= 0;
 		end
 	end
 	// we're outside active vertical range so display black
 	else
 	begin
-		vgaRed = 0;
-		vgaGreen = 0;
-		vgaBlue = 0;
+		vgaRed <= 0;
+		vgaGreen <= 0;
+		vgaBlue <= 0;
 	end
 end
 
@@ -113,17 +128,17 @@ end
 always@(posedge clk)
 	begin
 	if(rst)begin
-		cont_clk=0;
+		cont_clk<=0;
 		end
 	else
 		if(cont_clk==2'b01) //25Mhz
 			begin
-			Xclk=!Xclk;
-			cont_clk=0;
+			Xclk<=!Xclk;
+			cont_clk<=0;
 			end
 		else
 			begin
-			cont_clk= cont_clk+2'b01;
+			cont_clk<= cont_clk+2'b01;
 			end
 	end
 
@@ -135,44 +150,44 @@ always@(posedge clk_RAM)
 	begin
 	if(rst)
 		begin
-		direccion=0;
+		direccion<=0;
 		end
-	else 
+	else if((w_enable || r_enable) && !fin)
 		begin
-		direccion=direccion+1;
+		direccion<=direccion+1;
 		if(fin==1)
-			direccion=0;
+			direccion<=0;
 		end
 	end
 
 //------------------------------------------------------------------------------
-
+//	Multiplexacion de la salida de la RAM
 //------------------------------------------------------------------------------
 
 always@(posedge clk_RAM)
 	begin
 	if(direccion%3==0)
 		begin
-		red_dly=ram_imagen;
-		green_dly=0;
-		blue_dly=0;
+		red_dly<=ram_imagen;
+		green_dly<=0;
+		blue_dly<=0;
 		end
 	else if(direccion%3==1)
 		begin
-		red_dly=0;
-		green_dly=ram_imagen;
-		blue_dly=0;
+		red_dly<=0;
+		green_dly<=ram_imagen;
+		blue_dly<=0;
 		end
 	else
 		begin
-		red_dly=0;
-		green_dly=0;
-		blue_dly=ram_imagen;
+		red_dly<=0;
+		green_dly<=0;
+		blue_dly<=ram_imagen;
 		end
 	end
 		
 
-RAM_pantalla ram1(.clk_i(clk_RAM), .we_i(w_enable), .adr_i(direccion), .dat_i(Imagen), .dat_o(ram_imagen), .fin(fin));
+RAM_pantalla ram1(.clk_i(clk_RAM),.rst(rst), .we_i(w_enable),.re_i(r_enable), .adr_i(direccion), .dat_i(Imagen), .dat_o(ram_imagen), .fin(fin));
 
 
 endmodule

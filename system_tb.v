@@ -8,7 +8,7 @@ module system_tb;
 //----------------------------------------------------------------------------
 // Parameter (may differ for physical synthesis)
 //----------------------------------------------------------------------------
-parameter tck              = 10;       // clock period in ns
+parameter tck              = 1;       // clock period in ns
 parameter uart_baud_rate   = 1152000;  // uart baud rate for simulation 
 
 parameter clk_freq = 1000000000 / tck; // Frequenzy in HZ
@@ -43,7 +43,7 @@ system #(
 
 /* Clocking device */
 initial         clk <= 0;
-always #(tck/2) clk <= ~clk;
+always #(tck) clk <= ~clk;
 
 /* Simulation setup */
 initial begin
@@ -58,7 +58,7 @@ initial begin
 	#0  rst <= 0;
 	#40 rst <= 1;
 
-	#(tck*100000) $finish;
+	#(tck*200000) $finish;
 end
 
 

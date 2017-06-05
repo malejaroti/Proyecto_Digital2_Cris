@@ -31,7 +31,7 @@ image.srec: image.lst
 	$(LM32_OBJCOPY) $(SEGMENTS) -O srec image image.srec
 
 $(VRAMFILE): image.srec
-	$(SREC2VRAM) image.srec 0x00000000 0x1000 > $(VRAMFILE)
+	$(SREC2VRAM) image.srec 0x00000000 0x4000 > $(VRAMFILE)
 
 clean:
 	rm -f image image.lst image.bin image.srec image.map  *.o *.d *.ram

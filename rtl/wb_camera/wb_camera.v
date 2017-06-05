@@ -3,9 +3,9 @@
 //
 // Register Description:
 //
-//	0x00000 Tomar_imagen
-//	0x00004 Picture_Avail
-//	0x00008-0x4B008 Imagen
+//	0x00000 Cont. Ram     / Tomar_imagen
+//	0x00004 Picture_Avail / -------
+//	0x00008 Imagen        / Address Imagen
 //
 //		
 //---------------------------------------------------------------------------
@@ -28,31 +28,46 @@ module wb_camera (
 	input		camera_Pclk,
 	input	  [7:0]	Imagen,
 
-	output wire	camera_Xclk
+	output		camera_Xclk
 
 );
 
 //---------------------------------------------------------------------------
 // Actual UART engine
 //---------------------------------------------------------------------------
-wire       Picture_Avail;
-reg        Tomar_imagen;
 
-wire [18:0]cont_ram;
-
-wire we;
 reg re;
 reg [18:0] addr;
-wire [7:0] ram_imagen;
-wire fin;
 
+wire we;
+reg  Tomar_imagen;
 assign we = Tomar_imagen;
+
+wire [7:0] pIm;
+wire [7:0] ram_imagen;
+assign pIm=ram_imagen;
+
+wire Picture_Avail;
+wire fin;
 assign Picture_Avail=fin;
 
-Camara C0(.clk(clk),.rst(reset),.we(we),.re(re),.addr(addr),.Vsync(camera_Vsync),.Href(camera_Href),.Pclk(camera_Pclk),.Imagen(Imagen),.Xclk(camera_Xclk),.ram_imagen(ram_imagen),.fin(fin),.cont_ram(cont_ram));
+wire [18:0] cont_ram;
 
-wire pIm;
-assign pIm=ram_imagen;
+Camara C0(.clk		(clk),
+	  .rst		(reset),
+	  .we		(we),
+	  .re		(re),
+	  .addr_ram_i	(addr),
+	  .Vsync	(camera_Vsync),
+	  .Href		(camera_Href),
+	  .Pclk		(camera_Pclk),
+	  .ram_imagen_i	(Imagen),
+	  .Xclk		(camera_Xclk),
+	  .ram_imagen_o	(ram_imagen),
+	  .fin		(fin),
+	  .contador	(cont_ram));
+
+
 //---------------------------------------------------------------------------
 // 
 //---------------------------------------------------------------------------
@@ -69,26 +84,29 @@ always @(posedge clk)
 begin
 	if (reset) begin
 		ack    <= 0;
-		wb_dat_o[7:0]<=20;
+		wb_dat_o[31:0]<=0;
 	end else begin
-		wb_dat_o[31:8] <= 24'b0;
+		wb_dat_o[31:0] <= 0;
 		ack    <= 0;
-		if (wb_rd & ~ack) begin			//EScritura
+		if (wb_rd & ~ack) begin			//Escritura al procesador
 			ack <= 1;
 
 			case (wb_adr_i[3:0])
-                        4'h00: wb_dat_o[18:0]<=cont_ram[18:0]; 
-			4'h04: wb_dat_o[7:0] <= Picture_Avail;
-			4'h08: begin
+                        4'h00:  wb_dat_o[18:0]<=cont_ram[18:0]; 
+			4'h04:  wb_dat_o[7:0] <= Picture_Avail;
+			4'h08:  begin
 				re=1;
 				wb_dat_o[3:0] <= pIm;  //Enviar dato
 				end
+			default ;
 			endcase
-		end else if (wb_wr & ~ack ) begin	//Lectura
+		end else if (wb_wr & ~ack ) begin	//Lectura del procesador
 			ack <= 1;
 			case (wb_adr_i[3:0])
-                        4'h00: Tomar_imagen <= wb_dat_i;
-			4'h08: addr=wb_dat_i;
+                        4'h00:  Tomar_imagen <= wb_dat_i;
+			4'h04:  ;
+			4'h08:  addr=wb_dat_i;
+			default ;
 			endcase
 		end
 	end

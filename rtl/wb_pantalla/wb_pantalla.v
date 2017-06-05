@@ -3,7 +3,12 @@
 //
 // Register Description:
 //
-//
+//	0x00000 -------- / red
+//	0x00004 -------- / green
+//	0x00008 -------- / blue
+//	0x0000C -------- / w_enable
+//	0x00010 -------- / r_enable
+//	0x00014 -------- / reset
 //		
 //---------------------------------------------------------------------------
 
@@ -30,9 +35,11 @@ reg [3:0] red_i;
 reg [3:0] green_i;
 reg [3:0] blue_i;
 reg w_enable;
+reg r_enable;
+reg reset1;
 
 
-VGA vga0(.clk(clk),.rst(reset),.red_i(red_i),.green_i(green_i),.blue_i(green_i),.w_enable(w_enable),.Hsync(P_Hsync),.Vsync(P_Vsync),.vgaRed(P_red),.vgaGreen(P_green),.vgaBlue(P_blue));
+VGA vga0(.clk(clk),.rst(reset1),.red_i(red_i),.green_i(green_i),.blue_i(green_i),.w_enable(w_enable & wb_ack_o),.r_enable(r_enable),.Hsync(P_Hsync),.Vsync(P_Vsync),.vgaRed(P_red),.vgaGreen(P_green),.vgaBlue(P_blue));
 
 //-----------------------------------------------------
 // 
@@ -50,23 +57,36 @@ always @(posedge clk)
 begin
 	if (reset) begin
 		ack    <= 0;
-		wb_dat_o[7:0]<=20;
+		wb_dat_o[7:0]<=0;
 	end else begin
 		wb_dat_o[31:8] <= 24'b0;
 		ack    <= 0;
 		if (wb_rd & ~ack) begin			//EScritura
 			ack <= 1;
-
 			case (wb_adr_i[3:0])
 			default:;
 			endcase
 		end else if (wb_wr & ~ack ) begin	//Lectura
 			ack <= 1;
-			case (wb_adr_i[3:0])
-                        4'h00:	red_i[3:0] <= wb_dat_i[3:0];
-			4'h04:	green_i[3:0] <= wb_dat_i[3:0];
-			4'h08:	blue_i[3:0] <= wb_dat_i[3:0];
-			4'h0C:  w_enable <= wb_dat_i[0];
+			case (wb_adr_i[7:0])
+                        2'h00:	begin
+				red_i[3:0] <= wb_dat_i[3:0];
+				green_i <= 0;
+				blue_i <= 0;
+				end
+			2'h04:	begin
+				red_i <= 0;
+				green_i[3:0] <= wb_dat_i[3:0];
+				blue_i <= 0;
+				end
+			2'h08:	begin
+				red_i <= 0;
+				green_i <= 0;
+				blue_i[3:0] <= wb_dat_i[3:0];
+				end
+			2'h0C:  w_enable <= wb_dat_i[0];
+			2'h10:  r_enable <= wb_dat_i[0];
+			2'h14:  reset1 <= wb_dat_i[0];
 			default:;
 			endcase
 		end

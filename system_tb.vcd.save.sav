@@ -1,15 +1,15 @@
 [*]
 [*] GTKWave Analyzer v3.3.66 (w)1999-2015 BSI
-[*] Tue May  9 12:26:25 2017
+[*] Sat Jun  3 09:35:19 2017
 [*]
 [dumpfile] "/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/simulation/system_tb.vcd"
-[dumpfile_mtime] "Tue May  9 12:21:57 2017"
-[dumpfile_size] 92623633
+[dumpfile_mtime] "Sat Jun  3 09:33:47 2017"
+[dumpfile_size] 96622599
 [savefile] "/home/christian/Documentos/Digital II_lab/lm32/lm32_soc_HDL-master/system_tb.vcd.save.sav"
-[timestart] 8946000
+[timestart] 0
 [size] 1301 744
 [pos] -1 -1
-*-18.324520 9585000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+*-27.945078 151035000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] system_tb.
 [treeopen] system_tb.dut.
 [treeopen] system_tb.dut.cam0.
@@ -19,21 +19,20 @@
 [sst_vpaned_height] 211
 @28
 system_tb.dut.cam0.clk
-@22
-system_tb.dut.gpio0.wb_adr_i[31:0]
-system_tb.dut.gpio0.wb_dat_i[31:0]
-system_tb.dut.gpio0.wb_dat_o[31:0]
-@28
 system_tb.dut.cam0.reset
 @22
 system_tb.dut.cam0.wb_adr_i[31:0]
 system_tb.dut.cam0.wb_dat_i[31:0]
-@25
+@24
 system_tb.dut.cam0.wb_dat_o[31:0]
 @28
 system_tb.dut.cam0.wb_ack_o
 system_tb.dut.cam0.Tomar_imagen
 system_tb.dut.cam0.wb_wr
 system_tb.dut.cam0.wb_rd
+@29
+system_tb.dut.uart0.tx_wr
+@22
+system_tb.dut.uart0.tx_data[7:0]
 [pattern_trace] 1
 [pattern_trace] 0

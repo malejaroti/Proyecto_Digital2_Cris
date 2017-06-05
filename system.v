@@ -188,8 +188,8 @@ assign intr_n = { 28'hFFFFFFF, ~timer0_intr[1], ~gpio0_intr, ~timer0_intr[0], ~u
 conbus #(
 	.s_addr_w(3),
 	.s0_addr(3'b000),	// bram     0x00000000 
-	.s1_addr(3'b010),	// uart0    0x20000000 
-	.s2_addr(3'b011),	// timer    0x30000000 
+	.s1_addr(3'b011),	// uart0    0x20000000 
+	.s2_addr(3'b010),	// timer    0x30000000 
 	.s3_addr(3'b100),       // pantalla     0x40000000 
 	.s4_addr(3'b101),	// camara      0x50000000 
 	.s5_addr(3'b110)	// i2c      0x60000000 
@@ -315,7 +315,7 @@ lm32_cpu lm0 (
 // Block RAM
 //---------------------------------------------------------------------------
 wb_bram #(
-	.adr_width( 12 ),
+	.adr_width( 18 ),
 	.mem_file_name( bootram_file )
 ) bram0 (
 	.clk_i(  clk  ),
