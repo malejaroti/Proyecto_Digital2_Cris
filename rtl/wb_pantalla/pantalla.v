@@ -1,9 +1,7 @@
 module VGA(
 	input		clk,		
 	input		rst,		//asynchronous reset
-	input	[3:0]	red_i,
-	input	[3:0]	green_i,
-	input	[3:0]	blue_i,
+	input	[11:0]	pixel_i,
 	input		w_enable,	//selecciona velocidad i/o clk_RAM
 	input		r_enable,
 	output		Hsync,		//horizontal sync out
@@ -20,31 +18,32 @@ parameter width =	640;
 parameter height =	480;
 parameter hpulse =	96; 	
 parameter vpulse =	2; 	
-parameter hbp =		48; 	
-parameter hfp = 	16; 	
-parameter vbp = 	33;	
-parameter vfp = 	10; 	
+parameter hbp =		44; 	
+parameter hfp = 	20; 	
+parameter vbp = 	10;	
+parameter vfp = 	33; 	
 
-// registers for storing the horizontal & vertical counters
+// registros para guardar los contadores verticales y horizontales
 reg [9:0] hc=0;
 reg [9:0] vc=0;
 
 reg [2:0] cont_clk;
 reg Xclk=0;
 
-reg direccion=0;
+wire[18:0]direccion;
+reg [18:0]direccionw;
+reg [18:0]direccionr;
 
 wire active;
+wire [11:0]ram_imagen;
 
-reg [3:0] red_dly=0;
-reg [3:0] green_dly=0;
-reg [3:0] blue_dly=0;
+reg clk_RAM;
+reg clk_w;
+reg clk_r;
+
+assign direccion = (r_enable) ? direccionr:direccionw; 
 
 assign active= (hc<width && vc<height) ? 1:0;
-
-assign clk_RAM= (w_enable) ? clk: Xclk;
-
-assign Imagen= red_i||green_i||blue_i;
 
 initial
 begin
@@ -52,8 +51,35 @@ vgaRed<=0;
 vgaGreen<=0;
 vgaBlue<=0;
 cont_clk<=0;
+clk_RAM<=0;
+clk_w<=0;
+clk_r<=0;
+direccionw<=0;
+direccionr<=0;
 end
 
+//Generacion del Reloj
+
+always@(posedge clk)
+	begin
+	if(rst)begin
+		cont_clk<=0;
+		end
+	else
+		if(cont_clk==2'b01) //25Mhz
+			begin
+			Xclk<=!Xclk;
+			cont_clk<=0;
+			end
+		else
+			begin
+			cont_clk<= cont_clk+2'b01;
+			end
+	end
+
+
+
+//------------------------------------------------------------------------------
 
 always @(posedge Xclk or posedge rst)
 begin
@@ -82,7 +108,7 @@ begin
 
 //Active Low
 assign Hsync = (hc >= hfp+width-1 && hc < hfp+width+hpulse-1) ? 1:0;
-assign Vsync = (vc >= vfp+height-1 && vc < hfp+height+hpulse-1) ? 1:0;
+assign Vsync = (vc >= vfp+height-1 && vc < vfp+height+vpulse-1) ? 1:0;
 
 
 always @(posedge Xclk)
@@ -99,9 +125,9 @@ begin
 
 		if (hc <width)
 		begin
-			vgaRed <= red_dly;
-			vgaGreen <= green_dly;
-			vgaBlue <= blue_dly;
+			vgaRed <= ram_imagen[3:0];
+			vgaGreen <= ram_imagen[7:4];
+			vgaBlue <= ram_imagen[11:8];
 		end
 	// we're outside active horizontal range so display black
 		else
@@ -122,72 +148,51 @@ end
 
 //--------------------------------------------------------------------------
 
-
-//Generacion del Reloj
-
-always@(posedge clk)
-	begin
-	if(rst)begin
-		cont_clk<=0;
-		end
-	else
-		if(cont_clk==2'b01) //25Mhz
-			begin
-			Xclk<=!Xclk;
-			cont_clk<=0;
-			end
-		else
-			begin
-			cont_clk<= cont_clk+2'b01;
-			end
-	end
-
-
-
-//------------------------------------------------------------------------------
-
-always@(posedge clk_RAM)
+always@(negedge clk)
 	begin
 	if(rst)
 		begin
-		direccion<=0;
+		direccionw<=0;
 		end
-	else if((w_enable || r_enable) && !fin)
+	else if(w_enable && !fin)
 		begin
-		direccion<=direccion+1;
+		direccionw<=direccionw+1;
+		clk_w=1;
 		if(fin==1)
-			direccion<=0;
+			direccionw<=0;
 		end
+	clk_w=0;
 	end
 
-//------------------------------------------------------------------------------
-//	Multiplexacion de la salida de la RAM
-//------------------------------------------------------------------------------
-
-always@(posedge clk_RAM)
+always@(posedge Xclk)
 	begin
-	if(direccion%3==0)
+	if(rst)
 		begin
-		red_dly<=ram_imagen;
-		green_dly<=0;
-		blue_dly<=0;
+		direccionr<=0;
 		end
-	else if(direccion%3==1)
+	else if(r_enable)
 		begin
-		red_dly<=0;
-		green_dly<=ram_imagen;
-		blue_dly<=0;
+		direccionr<=direccionr+1;
+		clk_r=1;
+		if(direccionr==307199)
+			direccionr<=0;
 		end
-	else
-		begin
-		red_dly<=0;
-		green_dly<=0;
-		blue_dly<=ram_imagen;
-		end
+	clk_r=0;
 	end
-		
 
-RAM_pantalla ram1(.clk_i(clk_RAM),.rst(rst), .we_i(w_enable),.re_i(r_enable), .adr_i(direccion), .dat_i(Imagen), .dat_o(ram_imagen), .fin(fin));
+always@(negedge clk)
+begin
+	if(w_enable)
+		clk_RAM<=1;
+	else if (r_enable)
+		clk_RAM<=Xclk;
+	else
+		clk_RAM<=0;
+end
+
+
+
+RAM_pantalla ram1(.clk_i(clk_RAM),.rst(rst), .we_i(w_enable),.re_i(r_enable), .adr_i(direccion), .dat_i(pixel_i), .dat_o(ram_imagen), .fin(fin));
 
 
 endmodule

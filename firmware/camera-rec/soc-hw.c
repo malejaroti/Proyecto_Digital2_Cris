@@ -154,20 +154,6 @@ void camera_takeP(){
 	//	uart_putchar(0x3);
 }
 
-void camera_sendP(){
-	char pixel;
-	int i=0;
-	
-	while(i<307200) /*for(i=0;i<307200;i++)*/{
-		camera0->pIm=i;		//wb_address=camera0->pIm	// wb_dat_i=i 
-		pixel=camera0->pIm;	//wb_address=camera0->pIm(i)	// pixel=wb_dat_o
-		uart_putchar(pixel);
-		
-		i++;
-	}
-	
-}
-
 char camera_pixel(int address){
 	char pixel;
 	camera0->pIm=address;
@@ -180,17 +166,8 @@ char camera_pixel(int address){
  * Pantalla Functions
  */
 
-void pantalla_receiveRed(char pixel){
-	pantalla0->red=pixel;
-}
-
-void pantalla_receiveGreen(char pixel){
-	pantalla0->green=pixel;
-
-}
-
-void pantalla_receiveBlue(char pixel){
-	pantalla0->blue=pixel;
+void pantalla_receivePixel(char pixel){
+	pantalla0->pixel=pixel;
 }
 
 void pantalla_wEnable(){

@@ -3,12 +3,10 @@
 //
 // Register Description:
 //
-//	0x00000 -------- / red
-//	0x00004 -------- / green
-//	0x00008 -------- / blue
-//	0x0000C -------- / w_enable
-//	0x00010 -------- / r_enable
-//	0x00014 -------- / reset
+//	0x00000 -------- / pixel
+//	0x00004 -------- / w_enable
+//	0x00008 -------- / r_enable
+//	0x0000C -------- / reset
 //		
 //---------------------------------------------------------------------------
 
@@ -31,15 +29,22 @@ module wb_pantalla (
 	output 	[3:0]	P_green,
 	output 	[3:0]	P_blue);
 
-reg [3:0] red_i;
-reg [3:0] green_i;
-reg [3:0] blue_i;
+reg [11:0] pixel_i;
 reg w_enable;
 reg r_enable;
 reg reset1;
 
 
-VGA vga0(.clk(clk),.rst(reset1),.red_i(red_i),.green_i(green_i),.blue_i(green_i),.w_enable(w_enable & wb_ack_o),.r_enable(r_enable),.Hsync(P_Hsync),.Vsync(P_Vsync),.vgaRed(P_red),.vgaGreen(P_green),.vgaBlue(P_blue));
+VGA vga0( .clk		(clk),
+	  .rst		(reset1),
+	  .pixel_i	(pixel_i),
+	  .w_enable	(w_enable & wb_ack_o),
+	  .r_enable	(r_enable),
+	  .Hsync	(P_Hsync),
+	  .Vsync	(P_Vsync),
+	  .vgaRed	(P_red),
+	  .vgaGreen	(P_green),
+	  .vgaBlue	(P_blue));
 
 //-----------------------------------------------------
 // 
@@ -69,24 +74,10 @@ begin
 		end else if (wb_wr & ~ack ) begin	//Lectura
 			ack <= 1;
 			case (wb_adr_i[7:0])
-                        2'h00:	begin
-				red_i[3:0] <= wb_dat_i[3:0];
-				green_i <= 0;
-				blue_i <= 0;
-				end
-			2'h04:	begin
-				red_i <= 0;
-				green_i[3:0] <= wb_dat_i[3:0];
-				blue_i <= 0;
-				end
-			2'h08:	begin
-				red_i <= 0;
-				green_i <= 0;
-				blue_i[3:0] <= wb_dat_i[3:0];
-				end
-			2'h0C:  w_enable <= wb_dat_i[0];
-			2'h10:  r_enable <= wb_dat_i[0];
-			2'h14:  reset1 <= wb_dat_i[0];
+                        4'h00:	pixel_i<= wb_dat_i[11:0];
+			4'h04:  w_enable <= wb_dat_i[0];
+			4'h08:  r_enable <= wb_dat_i[0];
+			4'h0C:  reset1 <= wb_dat_i[0];
 			default:;
 			endcase
 		end

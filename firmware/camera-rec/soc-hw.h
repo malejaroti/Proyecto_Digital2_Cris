@@ -128,7 +128,6 @@ typedef struct {
 } camera_t;
 
 void camera_takeP();
-void camera_sendP();
 char camera_pixel(int address);
 
 /***************************************************************************
@@ -136,17 +135,13 @@ char camera_pixel(int address);
  */
 
 typedef struct {
-   volatile uint32_t red;
-   volatile uint32_t green;
-   volatile uint32_t blue;
+   volatile uint32_t pixel;
    volatile uint32_t w_enable;	
    volatile uint32_t r_enable;
    volatile uint32_t reset;
 } pantalla_t;
 
-void pantalla_receiveRed(char pixel);
-void pantalla_receiveGreen(char pixel);
-void pantalla_receiveBlue(char pixel);
+void pantalla_receivePixel(char pixel);
 void pantalla_wEnable();
 void pantalla_reset();
 void pantalla_rEnable();

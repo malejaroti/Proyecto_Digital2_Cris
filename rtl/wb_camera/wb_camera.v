@@ -26,7 +26,7 @@ module wb_camera (
 	input		camera_Vsync,
 	input		camera_Href,
 	input		camera_Pclk,
-	input	  [7:0]	Imagen,
+	input	  [11:0]	Imagen,
 
 	output		camera_Xclk
 
@@ -37,21 +37,21 @@ module wb_camera (
 //---------------------------------------------------------------------------
 
 reg re;
-reg [18:0] addr;
+reg [16:0] addr;
 
 wire we;
 reg  Tomar_imagen;
 assign we = Tomar_imagen;
 
-wire [7:0] pIm;
-wire [7:0] ram_imagen;
+wire [11:0] pIm;
+wire [11:0] ram_imagen;
 assign pIm=ram_imagen;
 
 wire Picture_Avail;
 wire fin;
 assign Picture_Avail=fin;
 
-wire [18:0] cont_ram;
+wire [16:0] cont_ram;
 
 Camara C0(.clk		(clk),
 	  .rst		(reset),
@@ -92,11 +92,11 @@ begin
 			ack <= 1;
 
 			case (wb_adr_i[3:0])
-                        4'h00:  wb_dat_o[18:0]<=cont_ram[18:0]; 
-			4'h04:  wb_dat_o[7:0] <= Picture_Avail;
+                        4'h00:  wb_dat_o[16:0]<=cont_ram[16:0]; 
+			4'h04:  wb_dat_o[0] <= Picture_Avail;
 			4'h08:  begin
 				re=1;
-				wb_dat_o[3:0] <= pIm;  //Enviar dato
+				wb_dat_o[11:0] <= pIm;  //Enviar dato
 				end
 			default ;
 			endcase
@@ -105,7 +105,7 @@ begin
 			case (wb_adr_i[3:0])
                         4'h00:  Tomar_imagen <= wb_dat_i;
 			4'h04:  ;
-			4'h08:  addr=wb_dat_i;
+			4'h08:  addr=wb_dat_i[16:0];
 			default ;
 			endcase
 		end

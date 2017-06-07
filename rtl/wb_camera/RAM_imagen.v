@@ -6,14 +6,14 @@ module RAM_imagen (
 	input		re_i,
 	//
 	input      [18:0] adr_i,
-	input      [7:0] dat_i,
-	output reg [7:0] dat_o,
+	input      [11:0] dat_i,
+	output reg [11:0] dat_o,
 	output reg fin);
 
-parameter word_depth = 307200; //640 x480
+parameter word_depth = 76800; //640 x480
 parameter word_width = 8;
 
-reg [7:0] ram [0:word_depth-1];
+reg [11:0] ram [0:word_depth-1];
 
 initial
 begin

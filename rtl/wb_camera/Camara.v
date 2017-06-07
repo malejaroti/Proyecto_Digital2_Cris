@@ -23,13 +23,13 @@ module Camara (
 		input		Vsync,
 		input		Href,
 		input		Pclk,
-		input [7:0]	ram_imagen_i,
+		input [11:0]	ram_imagen_i,
 
 		//Salida Hardware
 		output reg	Xclk,
 
 		//Salida Software
-		output  [7:0] ram_imagen_o,
+		output  [11:0] ram_imagen_o,
 		output 	fin,
 
 		//output led1,
@@ -39,7 +39,7 @@ module Camara (
 		//output href,
 		//output pclk,
 		//output xclk
-		output [18:0] contador
+		output [16:0] contador
 
 	);
 
@@ -60,8 +60,8 @@ module Camara (
 
 reg [1:0] cont_clk = 0;
 reg 	  cont_aux = 0;
-reg [18:0]cont_ram = 0;
-reg [18:0]direccion= 0; 
+reg [16:0]cont_ram = 0;
+reg [16:0]direccion= 0; 
 reg 	  START = 0;
 
 wire w_enable;

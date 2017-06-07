@@ -32,7 +32,7 @@ module system
 	input		  cam0_Vsync,
 	input		  cam0_Href,
 	input             cam0_Pclk,
-	input	[7:0]     cam0_Imagen,
+	input	[11:0]    cam0_Imagen,
 
 	output 		  cam0_Xclk,
 	//pantalla
